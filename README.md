@@ -11,6 +11,12 @@ cd ~/.dotfiles
 stow -v .
 ```
 
+This pulls in any plugins or themes managed as submodules (e.g., Alacritty themes, tmux plugin manager):
+
+```bash
+git submodule update --init --recursive
+```
+
 ## Structure
 
 - `nvim/` → Neovim configuration (linked to ~/.config/nvim)
