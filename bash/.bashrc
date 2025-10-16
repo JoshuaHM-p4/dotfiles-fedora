@@ -30,21 +30,18 @@ fi
 unset rc
 
 fastfetch
-alias start='fastfetch'
+alias ff='fastfetch'
 alias c='clear'
 alias r='ranger'
 alias g='git status'
 alias gp='git pull'
 alias quartus='~/Programs/intel_quartus/quartus/bin/quartus &'
 
-
 gcp() {
   git add .
   git commit -m "$1"
   git push
 }
-
-bind '"\C-f":"tmux-sessionizer\n"'
 
 get_roc() {
   local filename="$1"
@@ -88,8 +85,8 @@ get_sim() {
 upload_sample() {
   local filename="$1"
   scp -i ~/.ssh/id_rsa \
-    "~/Downloads/${filename}"\
-    "trainee-01@saliksik.asti.dost.gov.ph:/home/trainee-01/scratch1/face-embedding-model-analysis/data/samples/input" 
+    "~/Downloads/${filename}" \
+    "trainee-01@saliksik.asti.dost.gov.ph:/home/trainee-01/scratch1/face-embedding-model-analysis/data/samples/input"
 }
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
