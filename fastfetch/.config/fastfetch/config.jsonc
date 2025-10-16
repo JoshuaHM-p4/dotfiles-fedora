@@ -8,8 +8,8 @@
       "2": "default"
     },
     "padding": {
-      "top": 2,
-      "left": 2,
+      "top": 3,
+      "left": 5,
       "right": 2
     }
   },
@@ -43,7 +43,7 @@
     },
     {
       "type": "host",
-      "key": " └💻",
+      "key": " └ 💻",
       "keyColor": "red"
     },
     "break",
@@ -120,6 +120,11 @@
       "type": "monitor",
       "key": " └  ",
       "keyColor": "yellow"
+    },
+    "break",
+    {
+      "type": "colors",
+      "symbol": "circle"
     },
     "break",
     "break"
