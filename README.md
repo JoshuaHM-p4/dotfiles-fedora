@@ -24,6 +24,7 @@ git submodule update --init --recursive
 - `alacritty/` → Alacritty terminal settings (~/.config/alacritty)
 - `vim/` → Vim configuration (linked to ~/.vimrc and ~/.vim)
 - `bash/` → Bash configuration (~/.bashrc and ~/.bash_profile)
+- fastfetch/ → Fastfetch configuration (~/.config/fastfetch)
 
 ## Requirements
 

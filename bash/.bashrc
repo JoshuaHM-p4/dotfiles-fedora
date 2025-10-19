@@ -82,6 +82,13 @@ get_sim() {
     ~/Downloads/
 }
 
+get_checkpoint() {
+  local filename="$1"
+  scp -i ~/.ssh/id_rsa \
+    "trainee-01@saliksik.asti.dost.gov.ph:/home/trainee-01/scratch1/face-embedding-model-analysis/checkpoints/${filename}" \
+    ~/Downloads/
+}
+
 upload_sample() {
   local filename="$1"
   scp -i ~/.ssh/id_rsa \
