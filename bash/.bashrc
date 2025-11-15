@@ -36,6 +36,9 @@ alias r='ranger'
 alias g='git status'
 alias gp='git pull'
 alias quartus='~/Programs/intel_quartus/quartus/bin/quartus &'
+alias r2modman='~/Downloads/ebkr-r2modman-3.2.9/r2modman-3.2.9.AppImage'
+alias discordo='~/Programs/discordo/discordo'
+alias logicsim='~/Games/Digital-Logic-Sim/Digital-Logic-Sim.x86_64'
 
 gcp() {
   git add .
