@@ -2,5 +2,7 @@
 .gitconfig
 .git
 .gitignore
+.gitmodules
+README.md
 backup/
 tmp_config.json

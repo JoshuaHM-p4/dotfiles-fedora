@@ -29,74 +29,31 @@ if [ -d ~/.bashrc.d ]; then
 fi
 unset rc
 
+# Start of Custom Configurations
+## Custom Aliases
 fastfetch
+alias reload='source ~/.bashrc'
 alias ff='fastfetch'
 alias c='clear'
 alias r='ranger'
 alias g='git status'
 alias gp='git pull'
-alias quartus='~/Programs/intel_quartus/quartus/bin/quartus &'
+alias lsa='ls -a'
+alias ll='ls -la'
+alias dotfiles='cd ~/.dotfiles && nvim .'
+alias pjd='cd ~/CODE/proj'
+alias dcd='cd ~/Documents'
+alias becoming='nvim ~/Documents/Obsidian\ Vault/000\ INDEX/99\ PERSONAL/Purposes.md'
+
 alias r2modman='~/Downloads/ebkr-r2modman-3.2.9/r2modman-3.2.9.AppImage'
 alias discordo='~/Programs/discordo/discordo'
 alias logicsim='~/Games/Digital-Logic-Sim/Digital-Logic-Sim.x86_64'
+alias logout='gnome-session-quit --logout --no-prompt'
 
 gcp() {
   git add .
   git commit -m "$1"
   git push
-}
-
-get_roc() {
-  local filename="$1"
-  scp -i ~/.ssh/id_rsa \
-    "trainee-01@saliksik.asti.dost.gov.ph:/home/trainee-01/scratch1/face-embedding-model-analysis/results/roc_auc/${filename}" \
-    ~/Downloads/
-}
-
-get_auc_comparison() {
-  local filename="$1"
-  scp -i ~/.ssh/id_rsa \
-    "trainee-01@saliksik.asti.dost.gov.ph:/home/trainee-01/scratch1/face-embedding-model-analysis/results/roc_auc_comparison/${filename}" \
-    ~/Downloads/
-}
-get_simdist() {
-  local filename="$1"
-  scp -i ~/.ssh/id_rsa \
-    "trainee-01@saliksik.asti.dost.gov.ph:/home/trainee-01/scratch1/face-embedding-model-analysis/results/similarity_distributions/${filename}" \
-    ~/Downloads/
-}
-get_results() {
-  local filename="$1"
-  scp -i ~/.ssh/id_rsa \
-    "trainee-01@saliksik.asti.dost.gov.ph:/home/trainee-01/scratch1/face-embedding-model-analysis/results/${filename}" \
-    ~/Downloads/
-}
-
-get_csv() {
-  local filename="$1"
-  scp -i ~/.ssh/id_rsa \
-    "trainee-01@saliksik.asti.dost.gov.ph:/home/trainee-01/scratch1/face-embedding-model-analysis/results/csv/${filename}" \
-    ~/Downloads/
-}
-get_sim() {
-  local filename="$1"
-  scp -i ~/.ssh/id_rsa \
-    "trainee-01@saliksik.asti.dost.gov.ph:/home/trainee-01/scratch1/face-embedding-model-analysis/results/simulation/${filename}" \
-    ~/Downloads/
-}
-
-get_checkpoint() {
-  local filename="$1"
-  scp -i ~/.ssh/id_rsa \
-    "trainee-01@saliksik.asti.dost.gov.ph:/home/trainee-01/scratch1/face-embedding-model-analysis/checkpoints/${filename}" \
-    ~/Downloads/
-}
-
-upload_sample() {
-  local filename="$1"
-  scp -i ~/.ssh/id_rsa \
-    "~/Downloads/${filename}" \
-    "trainee-01@saliksik.asti.dost.gov.ph:/home/trainee-01/scratch1/face-embedding-model-analysis/data/samples/input"
 }
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -113,4 +70,7 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-export QSYS_ROOTDIR="/home/joshuam/Programs/intel_quartus/quartus/sopc_builder/bin"
+export PATH=~/.local/bin:$PATH
+if [ -f ~/.bash_secrets ]; then
+  source ~/.bash_secrets
+fi

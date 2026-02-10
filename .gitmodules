@@ -16,3 +16,9 @@
 [submodule "tmux/.tmux/plugins/tmux"]
   path = tmux/tmux./plugins/tmux
   url = https://git::@github.com/tmux/tmux.git
+[submodule "tmux/.tmux/plugins/tmux-powerkit"]
+	path = tmux/.tmux/plugins/tmux-powerkit
+	url = https://github.com/fabioluciano/tmux-powerkit.git
+[submodule "tmux/.tmux/plugins/tmux-themepack"]
+	path = tmux/.tmux/plugins/tmux-themepack
+	url = https://github.com/jimeh/tmux-themepack.git
