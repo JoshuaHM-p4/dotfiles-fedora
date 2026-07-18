@@ -25,3 +25,8 @@ binding = { key = "O", mods = "Control|Shift" }
 [scrolling]
 history = 50000
 multiplier = 3  # Number of lines scrolled per mouse wheel notch
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001B\r"
