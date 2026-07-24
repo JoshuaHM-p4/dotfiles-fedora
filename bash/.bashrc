@@ -64,12 +64,28 @@ pjdx() {
   pjd "$1"
   codex .
 }
+pjdn() {
+  pjd "$1" || return
+  npm run dev
+}
+pjdv() {
+  pjd "$1" || return
+  nvim .
+}
+pjdvi() {
+  pjd "$1" || return
+  vim .
+}
+pjdo() {
+  pjd "$1" || return
+  xdg-open .
+}
 _pjd() {
   local cur="${COMP_WORDS[COMP_CWORD]}"
   local IFS=$'\n'
   COMPREPLY=($(cd ~/CODE/proj && compgen -d -- "$cur"))
 }
-complete -o filenames -F _pjd pjd pjdc pjda pjdx
+complete -o filenames -F _pjd pjd pjdc pjda pjdx pjdn pjdv pjdvi pjdo
 
 alias dcd='cd ~/Documents && clear'
 alias dwd='cd ~/Downloads/ && clear'
