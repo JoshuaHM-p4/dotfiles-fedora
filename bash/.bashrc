@@ -32,7 +32,7 @@ unset rc
 # Start of Custom Configurations
 ## Custom Aliases
 fastfetch
-alias reload='source ~/.bashrc'
+alias sourceb='source ~/.bashrc'
 alias ff='fastfetch'
 alias c='clear'
 alias r='ranger'
@@ -44,14 +44,33 @@ alias opn='xdg-open .'
 alias dotfiles='cd ~/.dotfiles && nvim .'
 unalias pjd 2>/dev/null
 pjd() {
-    cd ~/CODE/proj/"$1" && clear
+  cd ~/CODE/proj/"$1" || return
+  clear
 }
 _pjd() {
-    local cur="${COMP_WORDS[COMP_CWORD]}"
-    local IFS=$'\n'
-    COMPREPLY=( $(cd ~/CODE/proj && compgen -d -- "$cur") )
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  local IFS=$'\n'
+  COMPREPLY=($(cd ~/CODE/proj && compgen -d -- "$cur"))
 }
-complete -o filenames -F _pjd pjd
+pjdc() {
+  pjd "$1"
+  claude .
+}
+pjda() {
+  pjd "$1"
+  agy .
+}
+pjdx() {
+  pjd "$1"
+  codex .
+}
+_pjd() {
+  local cur="${COMP_WORDS[COMP_CWORD]}"
+  local IFS=$'\n'
+  COMPREPLY=($(cd ~/CODE/proj && compgen -d -- "$cur"))
+}
+complete -o filenames -F _pjd pjd pjdc pjda pjdx
+
 alias dcd='cd ~/Documents && clear'
 alias dwd='cd ~/Downloads/ && clear'
 alias dsd='cd ~/Desktop/ && clear'
@@ -67,12 +86,11 @@ alias nins='npm install'
 alias nrd='npm run dev'
 alias nrb='npm run build'
 
-alias pipvenv='python3 -m venv .venv 2>/dev/null || python3 -m venv venv'
-alias pipinenv='source .venv/bin/activate 2>/dev/null || source venv/bin/activate'
+alias pyvenv='python3 -m venv .venv 2>/dev/null || python3 -m venv venv'
+alias pyenv='source .venv/bin/activate 2>/dev/null || source venv/bin/activate'
 alias piptxt='pip freeze > requirements.txt'
 alias pipins='pip install -r requirements.txt'
 alias venvrun='source .venv/bin/activate 2>/dev/null || source venv/bin/activate && python main.py 2>/dev/null || python run.py'
-
 alias pyrun='python main.py 2>/dev/null || python run.py'
 
 gcp() {
@@ -185,6 +203,23 @@ alias gundo='git reset --soft HEAD~1'
 
 _setup_git_completions() {
   if declare -f __git_complete >/dev/null 2>&1; then
+    __git_complete gi _git_init
+    __git_complete gcl _git_clone
+    __git_complete gs _git_status
+    __git_complete gss _git_status
+    __git_complete gitlog _git_log
+    __git_complete gitloga _git_log
+    __git_complete gitlogo _git_log
+    __git_complete ga _git_add
+    __git_complete gaa _git_add
+    __git_complete gap _git_add
+    __git_complete gaddx _git_add
+    __git_complete grm _git_rm
+    __git_complete gc _git_commit
+    __git_complete gcm _git_commit
+    __git_complete gca _git_commit
+    __git_complete gcam _git_commit
+    __git_complete gcan _git_commit
     __git_complete gb _git_branch
     __git_complete gba _git_branch
     __git_complete gbd _git_branch
@@ -209,28 +244,16 @@ _setup_git_completions() {
     __git_complete gd _git_diff
     __git_complete gds _git_diff
     __git_complete gdt _git_difftool
-    __git_complete gcp _git_cherry_pick
-    __git_complete gsh _git_show
+    __git_complete grh _git_reset
+    __git_complete grhh _git_reset
+    __git_complete gclean _git_clean
     __git_complete gt _git_tag
     __git_complete gta _git_tag
     __git_complete gtl _git_tag
-    __git_complete gcl _git_clone
-    __git_complete gc _git_commit
-    __git_complete gcm _git_commit
-    __git_complete gca _git_commit
-    __git_complete gcam _git_commit
-    __git_complete gcan _git_commit
-    __git_complete gst _git_stash
-    __git_complete gstp _git_stash
-    __git_complete gstl _git_stash
-    __git_complete gstd _git_stash
-    __git_complete ga _git_add
-    __git_complete gaa _git_add
-    __git_complete gap _git_add
-    __git_complete grm _git_rm
-    __git_complete grh _git_reset
-    __git_complete grhh _git_reset
-    __git_complete gi _git_init
+    __git_complete gchp _git_cherry_pick
+    __git_complete gbl _git_blame
+    __git_complete gsh _git_show
+    __git_complete gundo _git_reset
   fi
 }
 
