@@ -91,6 +91,7 @@ alias dcd='cd ~/Documents && clear'
 alias dwd='cd ~/Downloads/ && clear'
 alias dsd='cd ~/Desktop/ && clear'
 alias rdd='cd ~/Documents/RESEARCH/ && clear'
+alias rddr='cd ~/Documents/RESEARCH/DP1/repositories/ && clear'
 alias obsidian='~/Documents/Obsidian Vault/ && clear'
 alias notes='nvim ~/Documents/Obsidian\ Vault/000\ INDEX/99\ PERSONAL/Notes.md'
 alias becoming='nvim ~/Documents/Obsidian\ Vault/000\ INDEX/99\ PERSONAL/Purposes.md'
@@ -103,6 +104,7 @@ alias nrd='npm run dev'
 alias nrb='npm run build'
 
 alias pyvenv='python3 -m venv .venv 2>/dev/null || python3 -m venv venv'
+alias pyvenv312=' /usr/bin/python3.12 -m venv .venv 2>/dev/null || python3 -m venv venv'
 alias pyenv='source .venv/bin/activate 2>/dev/null || source venv/bin/activate'
 alias piptxt='pip freeze > requirements.txt'
 alias pipins='pip install -r requirements.txt'
@@ -149,7 +151,34 @@ alias ga='git add'
 alias gaa='git add .'
 alias gap='git add -p'
 alias gaddx="git add . ':!package.json' ':!package-lock.json' ':!**/package.json' ':!**/package-lock.json'"
+alias gaddc="git add . ':!*.md' ':!docs/'"
 alias grm='git rm'
+
+# Jump to a worktree by branch name
+wt() {
+  local dir
+  dir=$(git worktree list --porcelain |
+    awk -v branch="refs/heads/$1" \
+      '/^worktree /{dir=$2} /^branch /{if($2==branch) print dir}')
+  if [ -n "$dir" ]; then
+    cd "$dir" || return
+    echo "Switched to worktree: $dir (branch: $1)"
+  else
+    echo "No worktree found for branch '$1'"
+    return 1
+  fi
+}
+wti() {
+  local selected
+  selected=$(git worktree list | fzf --height 40% --reverse)
+  if [ -n "$selected" ]; then
+    cd "$(echo "$selected" | awk '{print $1}')" || return
+  fi
+}
+
+# ── Restoring ────────────────────────────
+alias gr='git restore'
+alias grs='git restore --staged'
 
 # ── Committing ──────────────────────────
 alias gc='git commit'
@@ -230,6 +259,8 @@ _setup_git_completions() {
     __git_complete gaa _git_add
     __git_complete gap _git_add
     __git_complete gaddx _git_add
+    __git_complete gr _git_restore
+    __git_complete grs _git_restore
     __git_complete grm _git_rm
     __git_complete gc _git_commit
     __git_complete gcm _git_commit
@@ -267,7 +298,7 @@ _setup_git_completions() {
     __git_complete gta _git_tag
     __git_complete gtl _git_tag
     __git_complete gchp _git_cherry_pick
-    __git_complete gbl _git_blame
+    __git_complete gbl _git_log
     __git_complete gsh _git_show
     __git_complete gundo _git_reset
   fi
@@ -280,6 +311,49 @@ wr() {
     nvim ~/Documents/NOTES/
   else
     nvim ~/Documents/NOTES/"$1"
+  fi
+}
+preview-alacritty-themes() {
+  local work repo config pid picked theme
+
+  work=$(mktemp -d) || return
+  repo="$work/alacritty-theme"
+  config="$work/preview.toml"
+
+  git clone --quiet --depth 1 \
+    https://github.com/alacritty/alacritty-theme.git "$repo" || {
+    rm -rf -- "$work"
+    return 1
+  }
+
+  cp "$repo/themes/acme.toml" "$config"
+
+  alacritty \
+    --config-file "$config" \
+    --title "Alacritty theme preview" \
+    --hold \
+    -e "$repo/print_colors.sh" &
+  pid=$!
+
+  picked=$(
+    for theme in "$repo"/themes/*.toml; do
+      printf '%s\t%s\n' \
+        "$(basename "$theme" .toml)" "$theme"
+    done |
+      sort |
+      fzf \
+        --delimiter=$'\t' \
+        --with-nth=1 \
+        --prompt='Alacritty theme › ' \
+        --bind "focus:execute-silent(cp -- {2} \"$config\")"
+  )
+
+  kill "$pid" 2>/dev/null
+  wait "$pid" 2>/dev/null
+  rm -rf -- "$work"
+
+  if [[ -n $picked ]]; then
+    printf 'Selected theme: %s\n' "${picked%%$'\t'*}"
   fi
 }
 
