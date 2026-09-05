@@ -3,6 +3,8 @@
 These are configuration files (dotfiles) for personal use, version-controlled for easy replication, restoration, and sharing across machines. The repository uses GNU Stow to symlink config files into appropriate locations.
 This system is tailored for Fedora Linux.
 
+![Desktop preview](.assets/screenshots/preview.png)
+
 ## Requirements
 
 - stow
@@ -49,3 +51,4 @@ git submodule update --init --recursive
 - `bash/` → Bash configuration (~/.bashrc )
 - `fastfetch/` → Fastfetch configuration (~/.config/fastfetch)
 - `discordo/` → Discordo configuration (~/.config/discordo)
+- `workmux/` → workmux configuration (~/.config/workmux)

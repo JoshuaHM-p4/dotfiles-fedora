@@ -1,0 +1,33 @@
+nerdfont: true
+theme: mossfire
+dashboard:
+  close_on_jump: false
+panes:
+  - command: <agent>
+    focus: true
+  - command: npm run dev
+    split: horizontal
+  - command: git log --oneline --graph --decorate
+    split: vertical
+layouts:
+  solo:
+    panes:
+      - command: <agent>
+        focus: true
+  with-dev:
+    panes:
+      - command: <agent>
+        focus: true
+      - command: npm run dev
+        split: horizontal
+      - command: git log --oneline --graph --decorate
+        split: vertical
+files:
+  copy:
+    - .env
+    - .env.local
+  symlink:
+    - node_modules
+    - .next/cache
+# post_create:
+#  - ./scripts/worktree-env
