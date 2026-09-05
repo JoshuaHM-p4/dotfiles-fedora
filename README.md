@@ -1,7 +1,8 @@
 # Dotfiles Repository
 
-These are configuration files (dotfiles) for personal use, version-controlled for easy replication, restoration, and sharing across machines. The repository uses GNU Stow to symlink config files into appropriate locations.
-This system is tailored for Fedora Linux.
+These are my dotfiles. They're in git mostly so I can get a new machine running without redoing everything by hand, and so I can roll things back when I break something. If any of it is useful to you, take it.
+
+GNU Stow does the symlinking. I run Fedora, so parts of this assume that.
 
 ![Desktop preview](.assets/screenshots/preview.png)
 
