@@ -14,7 +14,7 @@
 	path = tmux/.tmux/plugins/tmux-sensible
 	url = https://git::@github.com/tmux-plugins/tmux-sensible
 [submodule "tmux/.tmux/plugins/tmux"]
-  path = tmux/tmux./plugins/tmux
+  path = tmux/.tmux/plugins/tmux
   url = https://git::@github.com/tmux/tmux.git
 [submodule "tmux/.tmux/plugins/tmux-powerkit"]
 	path = tmux/.tmux/plugins/tmux-powerkit

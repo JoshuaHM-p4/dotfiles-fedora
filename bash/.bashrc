@@ -1,5 +1,8 @@
 # .bashrc
 
+# I use vim btw
+set -o vi
+
 # Source global definitions
 if [ -f /etc/bashrc ]; then
   . /etc/bashrc
@@ -31,7 +34,6 @@ unset rc
 
 # Start of Custom Configurations
 ## Custom Aliases
-fastfetch
 alias sourceb='source ~/.bashrc'
 alias ff='fastfetch'
 alias c='clear'
@@ -356,6 +358,24 @@ preview-alacritty-themes() {
     printf 'Selected theme: %s\n' "${picked%%$'\t'*}"
   fi
 }
+
+# Run fastfetch only in a real interactive terminal that is either
+# outside tmux or the only pane in its tmux window.
+# Skips agents, scripts, non-interactive shells, and multi-pane layouts.
+if [[ $- == *i* ]] && [ -t 1 ] &&
+  [ -z "${CLAUDE:-}${CODEX:-}${CURSOR_AGENT:-}${AI_AGENT:-}${ANTHROPIC:-}" ] &&
+  command -v fastfetch >/dev/null 2>&1; then
+  if [ -z "$TMUX" ]; then
+    # Not inside tmux → show it
+    fastfetch
+  else
+    # Inside tmux → only show when this window has exactly one pane
+    panes=$(tmux display-message -p '#{window_panes}' 2>/dev/null)
+    if [ "${panes:-0}" -eq 1 ]; then
+      fastfetch
+    fi
+  fi
+fi
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
