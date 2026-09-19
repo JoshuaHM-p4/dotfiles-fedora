@@ -44,6 +44,7 @@ alias flatsize="flatpak list --columns=size,name,application | awk '{ s=\$1; if 
 
 alias opn='xdg-open .'
 alias dotfiles='cd ~/.dotfiles && nvim .'
+alias wm='workmux'
 unalias pjd 2>/dev/null
 pjd() {
   cd ~/CODE/proj/"$1" || return
@@ -402,3 +403,4 @@ export PS1='\[\e[32m\]\u\[\e[0m\]@\[\e[33m\]\h\[\e[0m\]:\[\e[36m\]\w\[\e[0m\]\$ 
 
 # Added by Antigravity CLI installer
 export PATH="/home/joshuam/.local/bin:$PATH"
+export EDITOR="nvim"
