@@ -81,18 +81,43 @@ if git -C "$cwd" rev-parse --git-dir >/dev/null 2>&1; then
     [ -n "$(git -C "$cwd" status --porcelain 2>/dev/null)" ] && dirty="*"
 fi
 
-# ---- context window --------------------------------------------------------
-# Last non-sidechain assistant turn carries the prompt size for this session.
-pct=""
-if [ -f "$transcript" ]; then
+# ---- context window ----------------------------------------------------------
+# Claude Code sends the real numbers directly on context_window in the
+# statusline payload — context_window_size and a pre-computed used_percentage.
+# Nothing here is guessed. An earlier version of this script inferred the
+# window size (200k vs 1M) from a "[1m]" substring in model.id: that broke the
+# moment a session switched to Sonnet 5, whose id carries no such marker even
+# with a 1M window active, and silently showed ~95% where /context said 20%.
+#
+# Fallback (fmt_used only, no window/pct) covers callers that predate this
+# field or don't set it — older CLI versions, or a hand-built test payload —
+# by reading current_usage/the transcript directly instead of showing nothing.
+fmt_tok() { awk -v u="$1" 'BEGIN{
+    if      (u >= 999500) printf "%.1fm", u/1000000  # round-to-m before round-to-k can hit "1000k"
+    else if (u >= 1000)   printf "%.0fk", u/1000
+    else                  printf "%d", u
+}'; }
+
+ctx=""; have_pct=""; pct_r=0
+win=$(printf '%s' "$input" | jq -r '.context_window.context_window_size // empty')
+pct=$(printf '%s' "$input" | jq -r '.context_window.used_percentage // empty')
+used=$(printf '%s' "$input" | jq -r '
+    (.context_window.current_usage // {})
+    | (.input_tokens // 0) + (.output_tokens // 0)
+    + (.cache_creation_input_tokens // 0) + (.cache_read_input_tokens // 0)' 2>/dev/null)
+[ -n "$used" ] && [ "$used" = 0 ] && used=""
+
+if [ -n "$win" ] && [ -n "$pct" ] && [ -n "$used" ]; then
+    pct_r=$(awk -v p="$pct" 'BEGIN{printf "%d", p+0.5}')   # round, don't truncate
+    ctx="$(fmt_tok "$used")/$(fmt_tok "$win") (${pct_r}%)"
+    have_pct=1
+elif [ -z "$used" ] && [ -f "$transcript" ]; then
     # Read the tail, not the whole file: `tac` slurps the entire transcript to
     # reverse it, which grows without bound over a session (at 544K that alone
     # measured 261ms, against a ~90ms budget for the whole repaint). `tail -n`
     # seeks from the end instead. The newest turn is effectively always in the
     # last few lines; fall back to a full scan only if it somehow isn't.
-    find_usage() {
-        grep -v '"isSidechain":true' | grep -m1 '"usage":'
-    }
+    find_usage() { grep -v '"isSidechain":true' | grep -m1 '"usage":'; }
     line=$(tail -n 60 "$transcript" 2>/dev/null | tac | find_usage)
     [ -z "$line" ] && line=$(tac "$transcript" 2>/dev/null | find_usage)
     if [ -n "$line" ]; then
@@ -101,13 +126,10 @@ if [ -f "$transcript" ]; then
             | (.input_tokens // 0)
             + (.cache_creation_input_tokens // 0)
             + (.cache_read_input_tokens // 0)' 2>/dev/null)
-        case "$model_id" in
-            *"[1m]"*) win=1000000 ;;
-            *)        win=200000  ;;
-        esac
-        [ -n "$used" ] && [ "$used" -gt 0 ] 2>/dev/null && pct=$(( used * 100 / win ))
     fi
 fi
+
+[ -z "$ctx" ] && [ -n "$used" ] && [ "$used" -gt 0 ] 2>/dev/null && ctx="$(fmt_tok "$used")"
 
 # ---- USD -> PHP ------------------------------------------------------------
 # The cost arrives in USD. Rates are cached for 12h and refreshed in a detached
@@ -174,10 +196,14 @@ if [ -n "$branch" ]; then
     fi
 fi
 
-if [ -n "$pct" ]; then
-    if   [ "$pct" -ge 80 ]; then seg "$I_CTX" "$ERROR_BG" "${pct}%"
-    elif [ "$pct" -ge 60 ]; then seg "$I_CTX" "$WARN_BG"  "${pct}%"
-    else                         seg "$I_CTX" "$TEAL_BG"  "${pct}%"
+if [ -n "$ctx" ]; then
+    # Tiered colour only applies when have_pct is real (from
+    # context_window.used_percentage) — the fallback (bare token count, no
+    # known window) has nothing to threshold against, so it stays neutral.
+    if   [ -z "$have_pct" ]; then    seg "$I_CTX" "$TEAL_BG"  "$ctx"
+    elif [ "$pct_r" -ge 80 ]; then   seg "$I_CTX" "$ERROR_BG" "$ctx"
+    elif [ "$pct_r" -ge 60 ]; then   seg "$I_CTX" "$WARN_BG"  "$ctx"
+    else                             seg "$I_CTX" "$TEAL_BG"  "$ctx"
     fi
 fi
 
