@@ -53,3 +53,4 @@ git submodule update --init --recursive
 - `fastfetch/` → Fastfetch configuration (~/.config/fastfetch)
 - `discordo/` → Discordo configuration (~/.config/discordo)
 - `workmux/` → workmux configuration (~/.config/workmux)
+- `claude/` → Claude Code statusline (~/.claude/statusline-command.sh)
