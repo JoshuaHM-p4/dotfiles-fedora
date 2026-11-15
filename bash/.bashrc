@@ -93,6 +93,8 @@ complete -o filenames -F _pjd pjd pjdc pjda pjdx pjdn pjdv pjdvi pjdo
 alias dcd='cd ~/Documents && clear'
 alias dwd='cd ~/Downloads/ && clear'
 alias dsd='cd ~/Desktop/ && clear'
+alias std='cd ~/STARTUP/ && clear'
+alias scd='cd ~/SCHOOL/ && clear'
 alias rdd='cd ~/Documents/RESEARCH/ && clear'
 alias rddr='cd ~/Documents/RESEARCH/DP1/repositories/ && clear'
 alias obsidian='~/Documents/Obsidian Vault/ && clear'
@@ -113,6 +115,7 @@ alias piptxt='pip freeze > requirements.txt'
 alias pipins='pip install -r requirements.txt'
 alias venvrun='source .venv/bin/activate 2>/dev/null || source venv/bin/activate && python main.py 2>/dev/null || python run.py'
 alias pyrun='python main.py 2>/dev/null || python run.py'
+alias bagwis-cam='scp bagwis@bagwis-core.local:bagwis/bench/noir/noir-host.jpg .'
 
 gcp() {
   git add .
@@ -404,3 +407,7 @@ export PS1='\[\e[32m\]\u\[\e[0m\]@\[\e[33m\]\h\[\e[0m\]:\[\e[36m\]\w\[\e[0m\]\$ 
 # Added by Antigravity CLI installer
 export PATH="/home/joshuam/.local/bin:$PATH"
 export EDITOR="nvim"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

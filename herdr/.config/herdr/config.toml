@@ -1,0 +1,53 @@
+onboarding = false
+[keys]
+prefix = "ctrl+a"
+goto = "prefix+s"
+settings = "prefix+g"
+workspace_picker = "prefix+w"
+new_tab = "prefix+c"
+next_tab = ["prefix+n", "ctrl+alt+]"]
+previous_tab = ["prefix+p", "ctrl+alt+["]
+switch_tab = "prefix+1..9"
+focus_pane_left = "prefix+h"
+focus_pane_down = "prefix+j"
+focus_pane_up = "prefix+k"
+focus_pane_right = "prefix+l"
+navigate_workspace_down = "j"
+navigate_workspace_up = "k"
+navigate_pane_down = "ctrl+j"
+split_vertical = "prefix+shift+backslash"
+split_horizontal = "prefix+minus"
+close_pane = "prefix+x"
+zoom = "prefix+z"
+resize_mode = "prefix+r"
+[ui]
+window_title = "{hostname}: {workspace}"
+status_indicators = "symbols"
+accent = "#5aa469"
+confirm_close = true
+
+[theme]
+name = "catppuccin"
+
+[theme.custom]
+accent = "#5aa469"
+panel_bg = "#0b211d"
+active_row_bg = "#16332c"
+selection_bg = "#1d4038"
+surface0 = "#0b211d"
+surface1 = "#16332c"
+surface_dim = "#061917"
+overlay0 = "#3b5c4f"
+overlay1 = "#5a7566"
+text = "#d7e8d0"
+subtext0 = "#bcd0b6"
+mauve = "#a98cc4"
+green = "#7fc46a"
+yellow = "#d4b95e"
+red = "#e0685f"
+blue = "#5fbcae"
+teal = "#5fbcae"
+peach = "#d98e48"
+
+[ui.toast]
+delivery = "herdr"

@@ -3,7 +3,7 @@ import = ["~/.config/alacritty/themes/themes/tomorrow_night_bright.toml"]
 live_config_reload = true
 
 [window]
-opacity = 0.75
+opacity = 0.85
 decorations = "None"
 startup_mode = "Maximized"
 padding = { x = 0, y = 0 }
@@ -17,14 +17,14 @@ normal = { family = "Fira Code Nerd Font", style = "Medium" }
 size = 11.0
 
 [[hints.enabled]]
-command = "xdg-open"                            # Use "open" on macOS
+command = "xdg-open"
 hyperlinks = true
 post_processing = true
 binding = { key = "O", mods = "Control|Shift" }
 
 [scrolling]
 history = 50000
-multiplier = 3  # Number of lines scrolled per mouse wheel notch
+multiplier = 3
 
 [[keyboard.bindings]]
 key = "Return"
