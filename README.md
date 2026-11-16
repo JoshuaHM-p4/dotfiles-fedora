@@ -53,5 +53,6 @@ git submodule update --init --recursive
 - `fastfetch/` → Fastfetch configuration (~/.config/fastfetch)
 - `discordo/` → Discordo configuration (~/.config/discordo)
 - `workmux/` → workmux configuration (~/.config/workmux)
-- `herdr/` → herdr configuration (~/.config/herdr/config.toml)
+- `herdr/` → herdr configuration and notification sound (~/.config/herdr/config.toml, ~/.config/herdr/sounds/)
+- `omp/` → omp config, MCP servers, agents, skills, extensions, plugin manifest (~/.omp/agent, ~/.omp/plugins)
 - `claude/` → Claude Code statusline (~/.claude/statusline-command.sh)

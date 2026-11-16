@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "proyekto": {
+      "type": "http",
+      "url": "https://api.proyekto.tech/mcp",
+      "oauth": {
+        "scope": "projects:read roadmaps:read roadmaps:write tasks:write knowledge:read offline_access"
+      }
+    },
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp?project_ref=lihekcuksskwipkajjyv"
+    }
+  }
+}

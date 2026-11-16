@@ -1,0 +1,44 @@
+modelRoles:
+  smol: anthropic/claude-fable-5-2
+  plan: openai-codex/gpt-6.1-sol:medium
+  default: anthropic/claude-sonnet-5-5:high
+  backend: anthropic/claude-opus-5-5:high
+  frontend: anthropic/claude-sonnet-5-5:high
+  testing: openai-codex/gpt-6-astra:medium
+  qa: anthropic/claude-opus-5-5:high
+retry:
+  fallbackOn: usage-limit
+  usageAwareFallback: true
+  waitForUsageReset: false
+  fallbackChains:
+    default:
+      - openai-codex/gpt-6.1-terra:high
+    backend:
+      - openai-codex/gpt-6.1-sol:high
+      - anthropic/claude-sonnet-5-5:high
+    frontend:
+      - openai-codex/gpt-6.1-terra:high
+      - anthropic/claude-opus-5-5:high
+    testing:
+      - anthropic/claude-sonnet-5-5:high
+      - openai-codex/gpt-6.1-sol:medium
+    qa:
+      - openai-codex/gpt-6.1-sol:high
+    anthropic/claude-fable-5-2:
+      - anthropic/claude-opus-5-5:high
+      - openai-codex/gpt-6.1-sol:high
+symbolPreset: nerd
+composer:
+  shape: box
+theme:
+  dark: titanium
+  light: light
+setupVersion: 2
+dev:
+  autoqaConsent: granted
+providers:
+  anthropic:
+    slowMode: auto
+hideThinkingBlock: true
+codexResets:
+  autoRedeem: "no"

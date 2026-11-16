@@ -364,21 +364,26 @@ preview-alacritty-themes() {
 }
 
 # Run fastfetch only in a real interactive terminal that is either
-# outside tmux or the only pane in its tmux window.
+# outside a multiplexer or the only pane in its tmux window / herdr tab.
 # Skips agents, scripts, non-interactive shells, and multi-pane layouts.
 if [[ $- == *i* ]] && [ -t 1 ] &&
   [ -z "${CLAUDE:-}${CODEX:-}${CURSOR_AGENT:-}${AI_AGENT:-}${ANTHROPIC:-}" ] &&
   command -v fastfetch >/dev/null 2>&1; then
-  if [ -z "$TMUX" ]; then
-    # Not inside tmux → show it
-    fastfetch
-  else
+  if [ -n "$TMUX" ]; then
     # Inside tmux → only show when this window has exactly one pane
     panes=$(tmux display-message -p '#{window_panes}' 2>/dev/null)
-    if [ "${panes:-0}" -eq 1 ]; then
-      fastfetch
-    fi
+  elif [ -n "${HERDR_TAB_ID:-}" ]; then
+    # Inside herdr → only show when this tab has exactly one pane
+    [[ $(herdr tab get "$HERDR_TAB_ID" 2>/dev/null) =~ \"pane_count\":([0-9]+) ]] &&
+      panes=${BASH_REMATCH[1]}
+  else
+    # Not inside a multiplexer → show it
+    panes=1
   fi
+  if [ "${panes:-0}" -eq 1 ]; then
+    fastfetch
+  fi
+  unset panes
 fi
 
 # >>> conda initialize >>>

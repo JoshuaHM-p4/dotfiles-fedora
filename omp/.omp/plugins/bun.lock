@@ -1,0 +1,27 @@
+{
+  "lockfileVersion": 2,
+  "configVersion": 1,
+  "workspaces": {
+    "": {
+      "name": "omp-plugins",
+      "dependencies": {
+        "omp-impeccable": "^0.1.0",
+      },
+    },
+  },
+  "packages": {
+    "@impeccable/cli-darwin-arm64": ["@impeccable/cli-darwin-arm64@0.1.19", "", { "os": "darwin", "cpu": "arm64", "bin": { "impeccable-darwin-arm64": "bin/impeccable" } }, "sha512-xIV3AYI8r3ZUviT+VubSfDmerwH3FWJwisQCATLaCxP1Q6/pv/GINzSTsFU4MScseyxxIKhBx8n2ReiUD71Cyg=="],
+
+    "@impeccable/cli-darwin-x64": ["@impeccable/cli-darwin-x64@0.1.19", "", { "os": "darwin", "cpu": "x64", "bin": { "impeccable-darwin-x64": "bin/impeccable" } }, "sha512-2y/tyi37lyV4Vezd76+hi2DOu68ElWsLrQ+xzxbV1s+NTtUAd6BpM7TYAZZ/LfsrRaufymjocuktKSelcFecjw=="],
+
+    "@impeccable/cli-linux-arm64": ["@impeccable/cli-linux-arm64@0.1.19", "", { "os": "linux", "cpu": "arm64", "bin": { "impeccable-linux-arm64": "bin/impeccable" } }, "sha512-pSKbs0OOPAfOQlpB0wmlnJ+FrxX70GS5ZJZ6cv9uLsREf+q+fskV98dpg9pRCaSYEeSIr83stdfnkGpB0f+WOg=="],
+
+    "@impeccable/cli-linux-x64": ["@impeccable/cli-linux-x64@0.1.19", "", { "os": "linux", "cpu": "x64", "bin": { "impeccable-linux-x64": "bin/impeccable" } }, "sha512-wsuMvFkj5Lc9ur5mePDNya4Kd4sR2Rd3h1f69EUKhyLOSwXvNziyLb1uJZgwirrXiNIhmb8tCEuftbe0zYoCCg=="],
+
+    "@impeccable/cli-windows-x64": ["@impeccable/cli-windows-x64@0.1.19", "", { "os": "win32", "cpu": "x64", "bin": { "impeccable-windows-x64": "bin/impeccable.exe" } }, "sha512-Tgb/8WHpLysXro7nryGp/GM27RBw4WCUA+nRXJ7PL3NvXC70anynFIZiWn6wL9N0jnpoZUrnw8SGcHd3NzXCsQ=="],
+
+    "impeccable": ["impeccable@4.8.1", "", { "optionalDependencies": { "@impeccable/cli-darwin-arm64": "0.1.19", "@impeccable/cli-darwin-x64": "0.1.19", "@impeccable/cli-linux-arm64": "0.1.19", "@impeccable/cli-linux-x64": "0.1.19", "@impeccable/cli-windows-x64": "0.1.19" }, "bin": { "impeccable": "cli/bin/cli.js" } }, "sha512-Ivj58vndEIbcAA2+GbaHEXpZ4t0uSMHKz9leyH1uslxHntnq/CDpLLH9bUYqp7jrZmkU2ObSNmKw5vbDEKOFKQ=="],
+
+    "omp-impeccable": ["omp-impeccable@0.1.0", "", { "dependencies": { "impeccable": "*" } }, "sha512-rjx9xQFWt7cQBDephYVDu/coU1DqCv3NnxMNl8vP2xFieMb8zjJBnZjPJjCu1DPO4efAmtOSv6Rtzg3GsPJP7w=="],
+  }
+}

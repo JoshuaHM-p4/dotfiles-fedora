@@ -20,6 +20,13 @@ split_horizontal = "prefix+minus"
 close_pane = "prefix+x"
 zoom = "prefix+z"
 resize_mode = "prefix+r"
+switch_workspace = ["prefix+shift+1..9", "ctrl+alt+1..9"]
+focus_agent = ["prefix+alt+1..9", "ctrl+alt+shift+1..9"]
+next_workspace = "ctrl+alt+."
+previous_workspace = "ctrl+alt+,"
+next_agent = "ctrl+alt+shift+]"
+previous_agent = "ctrl+alt+shift+["
+last_pane = "prefix+a"
 [ui]
 window_title = "{hostname}: {workspace}"
 status_indicators = "symbols"
@@ -51,3 +58,7 @@ peach = "#d98e48"
 
 [ui.toast]
 delivery = "herdr"
+
+[ui.sound]
+enabled = true
+path = "sounds/wii-remote-connect.mp3"
