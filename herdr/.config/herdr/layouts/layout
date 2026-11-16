@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# Apply a pane layout to a herdr pane (port of the workmux layouts).
+# Usage: layout [solo|with-dev|bagwis] [pane_id]
+#   no layout  → pick one with fzf
+#   no pane_id → the active pane (HERDR_ACTIVE_PANE_ID, set for keybinding commands)
+set -euo pipefail
+
+herdr=${HERDR_BIN_PATH:-herdr}
+layouts=(solo with-dev bagwis)
+
+layout=${1:-}
+if [ -z "$layout" ]; then
+  layout=$(printf '%s\n' "${layouts[@]}" | fzf --prompt 'layout> ' --height 100% --reverse) || exit 0
+fi
+root=${2:-${HERDR_ACTIVE_PANE_ID:-${HERDR_PANE_ID:-}}}
+if [ -z "$root" ]; then
+  echo "layout: no target pane" >&2
+  exit 2
+fi
+
+# split <pane> <right|down> → prints the new pane id
+split() {
+  "$herdr" pane split "$1" --direction "$2" --no-focus | jq -r '.result.pane.pane_id'
+}
+run() {
+  local pane=$1
+  shift
+  "$herdr" pane run "$pane" "$@" >/dev/null
+}
+# Start omp in the pane unless an agent already runs there.
+agent() {
+  local current
+  current=$("$herdr" pane get "$1" | jq -r '.result.pane.agent // empty')
+  [ -n "$current" ] || run "$1" omp
+}
+
+case $layout in
+  solo)
+    agent "$root"
+    ;;
+  with-dev)
+    dev=$(split "$root" right)
+    log=$(split "$dev" down)
+    run "$dev" autorun npm run dev
+    run "$log" git log --oneline --graph --decorate
+    agent "$root"
+    ;;
+  bagwis)
+    core=$(split "$root" right)
+    drone=$(split "$core" down)
+    run "$core" ssh bagwis-core
+    run "$drone" ssh drone
+    agent "$root"
+    ;;
+  *)
+    echo "layout: unknown layout '$layout' (have: ${layouts[*]})" >&2
+    exit 2
+    ;;
+esac

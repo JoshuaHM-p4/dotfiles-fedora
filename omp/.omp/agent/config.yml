@@ -1,7 +1,7 @@
 modelRoles:
   smol: anthropic/claude-fable-5-2
   plan: openai-codex/gpt-6.1-sol:medium
-  default: anthropic/claude-sonnet-5-5:high
+  default: anthropic/claude-opus-5-5:high
   backend: anthropic/claude-opus-5-5:high
   frontend: anthropic/claude-sonnet-5-5:high
   testing: openai-codex/gpt-6-astra:medium
@@ -33,7 +33,7 @@ composer:
 theme:
   dark: titanium
   light: light
-setupVersion: 2
+setupVersion: 3
 dev:
   autoqaConsent: granted
 providers:
@@ -41,4 +41,7 @@ providers:
     slowMode: auto
 hideThinkingBlock: true
 codexResets:
-  autoRedeem: "no"
+  autoRedeem5h: "no"
+  autoRedeemWeekly: "no"
+update:
+  auto: true

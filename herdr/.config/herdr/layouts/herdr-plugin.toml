@@ -1,0 +1,10 @@
+id = "dotfiles.layouts"
+name = "Layouts"
+version = "0.1.0"
+min_herdr_version = "0.9.5"
+description = "Apply workmux-style pane layouts to new worktree workspaces"
+platforms = ["linux"]
+
+[[events]]
+on = "worktree.created"
+command = ["./on-worktree-created"]

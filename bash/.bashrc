@@ -363,6 +363,32 @@ preview-alacritty-themes() {
   fi
 }
 
+# herdr: run a long-lived command (dev server, watcher) and have herdr re-run it
+# in this pane after a server restart. Stopping it (Ctrl-C) turns that off.
+# Usage: autorun npm run dev
+autorun() {
+  if [ $# -eq 0 ]; then
+    echo "usage: autorun <command> [args...]" >&2
+    return 2
+  fi
+  if [ -z "${HERDR_PANE_ID:-}" ] || [ -z "${HERDR_BIN_PATH:-}" ]; then
+    "$@"
+    return
+  fi
+  local id=(--source user:autorun --agent "$*")
+  "$HERDR_BIN_PATH" pane report-agent "$HERDR_PANE_ID" "${id[@]}" --state idle \
+    --seq "$(date +%s%N)" -- autorun "$@" >/dev/null 2>&1 ||
+    echo "autorun: herdr rejected the restore command; running without it" >&2
+  # Catch Ctrl-C in this shell so the release below still runs after the command dies.
+  trap : INT
+  "$@"
+  local rc=$?
+  trap - INT
+  "$HERDR_BIN_PATH" pane release-agent "$HERDR_PANE_ID" "${id[@]}" \
+    --seq "$(date +%s%N)" >/dev/null 2>&1
+  return $rc
+}
+
 # Run fastfetch only in a real interactive terminal that is either
 # outside a multiplexer or the only pane in its tmux window / herdr tab.
 # Skips agents, scripts, non-interactive shells, and multi-pane layouts.

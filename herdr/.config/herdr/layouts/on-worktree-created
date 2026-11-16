@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# worktree.created hook: lay out the new worktree workspace.
+# bagwis repo → bagwis; Node projects (package.json) → with-dev; else solo.
+set -euo pipefail
+
+herdr=${HERDR_BIN_PATH:-herdr}
+ws=$(jq -r '.. | objects | .workspace_id? // empty' <<<"${HERDR_PLUGIN_EVENT_JSON:?}" | head -n1)
+panes=$("$herdr" pane list --workspace "$ws")
+root=$(jq -r '.result.panes[0].pane_id' <<<"$panes")
+cwd=$(jq -r '.result.panes[0].cwd' <<<"$panes")
+
+# Main checkout dir name, so worktrees of a repo match by the repo, not the worktree path.
+repo=$(basename "$(dirname "$(git -C "$cwd" rev-parse --path-format=absolute --git-common-dir 2>/dev/null || echo "$cwd/.git")")")
+
+layout=solo
+if [ "$repo" = bagwis ]; then
+  layout=bagwis
+elif [ -f "$cwd/package.json" ]; then
+  layout=with-dev
+fi
+exec "$HERDR_PLUGIN_ROOT/layout" "$layout" "$root"

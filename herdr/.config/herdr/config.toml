@@ -27,11 +27,77 @@ previous_workspace = "ctrl+alt+,"
 next_agent = "ctrl+alt+shift+]"
 previous_agent = "ctrl+alt+shift+["
 last_pane = "prefix+a"
+
+# Pane layouts (layouts/layout); new worktrees get one automatically.
+[[keys.command]]
+key = "prefix+alt+l"
+type = "popup"
+command = "~/.config/herdr/layouts/layout"
+description = "apply pane layout"
+width = 40
+height = 8
+
 [ui]
 window_title = "{hostname}: {workspace}"
 status_indicators = "symbols"
 accent = "#5aa469"
 confirm_close = true
+prompt_new_workspace_name = true
+pane_gaps = false
+pane_outer_borders = false
+hide_tab_bar_when_single_tab = true
+tab_bar_right = [
+  { type = "command", command = "git -C \"$HERDR_ACTIVE_PANE_CWD\" branch --show-current 2>/dev/null", interval_seconds = 5, timeout_seconds = 2 },
+]
+agent_panel_sort = "priority"
+
+# Agent panel, per entry:
+#   1. state icon · machine · workspace · tab
+#   2. agent name + state word (blocked = bold red; hidden while idle)
+#   3. dimmed task title (terminal title without the spinner)
+# Known agents get their icon + name tinted (state still shown by symbol shape).
+[ui.sidebar.agents]
+rows = [
+  ["state_icon", "machine", "workspace", "tab"],
+  ["agent", { token = "state_text", rules = [{ equals = "blocked", fg = "#e0685f", bold = true }, { equals = "idle", hide = true }] }],
+  [{ token = "terminal_title_stripped", dim = true }],
+]
+
+[ui.sidebar.agents.rows_by_agent]
+omp = [
+  [{ token = "state_icon", fg = "#a98cc4" }, "machine", "workspace", "tab"],
+  [{ token = "agent", fg = "#a98cc4" }, { token = "state_text", rules = [{ equals = "blocked", fg = "#e0685f", bold = true }, { equals = "idle", hide = true }] }],
+  [{ token = "terminal_title_stripped", dim = true }],
+]
+claude = [
+  [{ token = "state_icon", fg = "#d98e48" }, "machine", "workspace", "tab"],
+  [{ token = "agent", fg = "#d98e48" }, { token = "state_text", rules = [{ equals = "blocked", fg = "#e0685f", bold = true }, { equals = "idle", hide = true }] }],
+  [{ token = "terminal_title_stripped", dim = true }],
+]
+codex = [
+  [{ token = "state_icon", fg = "#5fbcae" }, "machine", "workspace", "tab"],
+  [{ token = "agent", fg = "#5fbcae" }, { token = "state_text", rules = [{ equals = "blocked", fg = "#e0685f", bold = true }, { equals = "idle", hide = true }] }],
+  [{ token = "terminal_title_stripped", dim = true }],
+]
+pi = [
+  [{ token = "state_icon", fg = "#d4b95e" }, "machine", "workspace", "tab"],
+  [{ token = "agent", fg = "#d4b95e" }, { token = "state_text", rules = [{ equals = "blocked", fg = "#e0685f", bold = true }, { equals = "idle", hide = true }] }],
+  [{ token = "terminal_title_stripped", dim = true }],
+]
+
+# Spaces panel: workspace name tinted per workspace (state_icon can't take rules).
+[ui.sidebar.spaces]
+rows = [
+  ["state_icon", { token = "workspace", rules = [
+    { equals = "home", fg = "#7fc46a" },
+    { equals = "pacific-insurance-ph", fg = "#5fbcae" },
+    { equals = "fnan", fg = "#d4b95e" },
+    { equals = "bagwis", fg = "#d98e48" },
+    { equals = "campusfindly", fg = "#a98cc4" },
+    { equals = "aws-mla", fg = "#d27aa8" },
+  ] }],
+  [{ token = "branch", dim = true, rules = [{ equals = "main", hide = true }, { equals = "master", hide = true }] }, "git_status"],
+]
 
 [theme]
 name = "catppuccin"
